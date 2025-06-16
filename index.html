@@ -1,0 +1,407 @@
+<!-- ======================================================= -->
+<!-- FILE 1: index.html (මෙය ඔබගේ ප්‍රධාන HTML file එකයි)   -->
+<!-- ======================================================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- PWA සඳහා අවශ්‍ය Meta Tags -->
+    <meta name="theme-color" content="#149A9B"/>
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/149A9B/FFFFFF?text=App">
+
+    <title>Teacher Payment System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+Sinhala:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- manifest.json file එක සම්බන්ධ කිරීම -->
+    <link rel="manifest" href="manifest.json">
+
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Sinhala', sans-serif;
+        }
+        .sinhala-font {
+            font-family: 'Noto Sans Sinhala', sans-serif;
+        }
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            appearance: textfield;
+            -moz-appearance: textfield;
+        }
+        @media print {
+            body * { visibility: hidden; }
+            #receipt-to-print, #receipt-to-print * { visibility: visible; color: #000 !important; }
+            #receipt-to-print { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; border: none; background: #fff !important; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+
+    <div class="container mx-auto p-4 md:p-6 max-w-2xl">
+        <header class="text-center mb-10 no-print">
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-600 dark:text-teal-400 sinhala-font">චමිඳු කැළුම්</h1>
+            <p class="text-xs text-gray-500 dark:text-gray-400">BET(Hon's)(UG)</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">University of Sri Jayewardenepura</p>
+            <h2 class="text-2xl font-bold mt-4">Payment System</h2>
+        </header>
+
+        <main>
+            <!-- Payment Form -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 md:p-8 mb-10 no-print">
+                <h3 class="text-xl font-bold mb-6 border-b border-gray-200 dark:border-gray-700 pb-3">Record New Payment</h3>
+                <form id="paymentForm" class="space-y-4">
+                    <input type="hidden" id="recordId">
+                    <div>
+                        <label for="studentName" class="block mb-2 text-sm font-medium">Student Name</label>
+                        <input type="text" id="studentName" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5" required>
+                    </div>
+                    <div>
+                        <label for="className" class="block mb-2 text-sm font-medium">Class</label>
+                        <select id="className" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5" required>
+                            <option>Grade 6 ICT</option>
+                            <option>Grade 7 ICT</option>
+                            <option>Grade 8 ICT</option>
+                            <option>Grade 9 ICT</option>
+                            <option>Grade 10 ICT</option>
+                            <option>Grade 11 ICT</option>
+                            <option>A/L ICT</option>
+                            <option>A/L SFT</option>
+                        </select>
+                    </div>
+                     <div>
+                        <label for="paymentMonth" class="block mb-2 text-sm font-medium">Payment Month</label>
+                        <select id="paymentMonth" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5">
+                            <option>January</option>
+                            <option>February</option>
+                            <option>March</option>
+                            <option>April</option>
+                            <option>May</option>
+                            <option>June</option>
+                            <option>July</option>
+                            <option>August</option>
+                            <option>September</option>
+                            <option>October</option>
+                            <option>November</option>
+                            <option>December</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="classFees" class="block mb-2 text-sm font-medium">Class Fees (Rs.)</label>
+                            <input type="number" id="classFees" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5" required min="0">
+                        </div>
+                        <div>
+                            <label for="paymentMethod" class="block mb-2 text-sm font-medium">Payment Method</label>
+                            <select id="paymentMethod" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5">
+                                <option>Cash</option>
+                                <option>Card</option>
+                                <option>Bank Transfer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" id="formSubmitBtn" class="w-full text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:ring-teal-300 font-medium rounded-lg text-md px-5 py-3 text-center">
+                        Record Payment
+                    </button>
+                    <button type="button" id="cancelEditBtn" class="w-full text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-lg text-md px-5 py-3 text-center hidden mt-2">
+                        Cancel Edit
+                    </button>
+                </form>
+            </div>
+
+            <!-- Current Receipt Display -->
+            <div id="receipt-section" class="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 mb-10 hidden">
+                <div id="receipt-to-print" class="p-4">
+                    <!-- Header Section -->
+                    <div class="text-center mb-6 border-b-2 border-teal-200 dark:border-teal-700 pb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <h2 class="text-2xl font-bold mt-2 text-gray-800 dark:text-white">PAYMENT RECEIPT</h2>
+                    </div>
+
+                    <!-- Receipt Details -->
+                    <div class="space-y-4 text-gray-700 dark:text-gray-300">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Receipt No:</span>
+                                <p id="receiptId" class="text-md font-semibold mt-1"></p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date:</span>
+                                <p id="receiptDate" class="text-md font-semibold mt-1"></p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Student Name:</span>
+                            <p id="receiptStudent" class="text-md font-semibold mt-1"></p>
+                        </div>
+                        
+                        <div>
+                             <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Class:</span>
+                             <p id="receiptClass" class="text-md font-semibold mt-1"></p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Month:</span>
+                                <p id="receiptMonth" class="text-md font-semibold mt-1"></p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Method:</span>
+                                <p id="receiptMethod" class="text-md font-semibold mt-1"></p>
+                            </div>
+                        </div>
+
+                        <!-- Amount Highlight -->
+                        <div class="text-center bg-teal-50 dark:bg-teal-900/30 rounded-xl p-4 mt-6 border border-teal-100 dark:border-teal-800">
+                            <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Amount Paid</span>
+                            <p id="receiptAmount" class="text-3xl font-bold text-teal-600 dark:text-teal-400 mt-1"></p>
+                        </div>
+
+                        <!-- Footer Section -->
+                        <div class="mt-8 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <div class="flex justify-between items-end">
+                                <div class="text-center mt-4">
+                                    <p class="sinhala-font text-2xl font-bold text-teal-600 dark:text-teal-400">චමිඳු කැළුම්</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">BET(Hon's)(UG)</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">University of Sri Jayewardenepura</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Teacher Contact:</p>
+                                    <p class="text-sm font-medium">071 3760679</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Print Button -->
+                <button id="printBtn" class="w-full mt-6 text-white bg-teal-600 hover:bg-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center no-print transition-colors duration-200">
+                    Print Receipt
+                </button>
+            </div>
+
+
+            <!-- Payment History -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 md:p-8 no-print">
+                <h3 class="text-xl font-bold mb-4 border-b pb-3">Payment History</h3>
+                <div id="history-container" class="space-y-3">
+                    <p class="text-gray-500">No payment records found.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- Service Worker Registration (PWA) ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+
+        // --- IndexedDB Setup ---
+        let db;
+        const dbName = "TeacherPaymentDB_v3";
+        const request = indexedDB.open(dbName, 1);
+
+        request.onerror = (e) => console.error(`Database error: ${e.target.errorCode}`);
+        request.onupgradeneeded = (e) => {
+            db = e.target.result;
+            db.createObjectStore("payments", { keyPath: "id", autoIncrement: true });
+        };
+        request.onsuccess = (e) => {
+            db = e.target.result;
+            displayHistory();
+        };
+
+        // --- DOM Elements ---
+        const paymentForm = document.getElementById('paymentForm');
+        const recordIdInput = document.getElementById('recordId');
+        const formSubmitBtn = document.getElementById('formSubmitBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+        // --- Event Listeners ---
+        paymentForm.addEventListener('submit', handleFormSubmit);
+        cancelEditBtn.addEventListener('click', cancelEditMode);
+        
+        // --- Form Functions ---
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const id = recordIdInput.value ? parseInt(recordIdInput.value) : null;
+            const studentName = document.getElementById('studentName').value;
+            const className = document.getElementById('className').value;
+            const paymentMonth = document.getElementById('paymentMonth').value;
+            const classFees = parseFloat(document.getElementById('classFees').value);
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+            if (!studentName || !className || !paymentMonth || isNaN(classFees)) {
+                alert('Please fill all fields correctly.');
+                return;
+            }
+
+            const paymentData = { studentName, className, paymentMonth, classFees, paymentMethod };
+
+            if (id) {
+                updatePayment(id, paymentData);
+            } else {
+                addPayment(paymentData);
+            }
+        }
+
+        function addPayment(data) {
+            const newPayment = { ...data, date: new Date() };
+            const tx = db.transaction("payments", "readwrite");
+            const store = tx.objectStore("payments");
+            const request = store.add(newPayment);
+
+            request.onsuccess = (e) => {
+                resetForm();
+                displayReceipt(e.target.result);
+                displayHistory();
+            };
+        }
+        
+        function updatePayment(id, data) {
+            const tx = db.transaction('payments', 'readwrite');
+            const store = tx.objectStore('payments');
+            const getReq = store.get(id);
+
+            getReq.onsuccess = () => {
+                const oldData = getReq.result;
+                const updatedRecord = { ...oldData, ...data, id: id };
+                const putReq = store.put(updatedRecord);
+                
+                putReq.onsuccess = () => {
+                    cancelEditMode();
+                    displayReceipt(id);
+                    displayHistory();
+                };
+            };
+        }
+        
+        function editPayment(id) {
+            const tx = db.transaction('payments', 'readonly');
+            const store = tx.objectStore('payments');
+            const req = store.get(id);
+
+            req.onsuccess = () => {
+                const data = req.result;
+                recordIdInput.value = data.id;
+                document.getElementById('studentName').value = data.studentName;
+                document.getElementById('className').value = data.className;
+                document.getElementById('paymentMonth').value = data.paymentMonth;
+                document.getElementById('classFees').value = data.classFees;
+                document.getElementById('paymentMethod').value = data.paymentMethod;
+                
+                formSubmitBtn.textContent = 'Update Payment';
+                cancelEditBtn.classList.remove('hidden');
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            };
+        }
+
+        function deletePayment(id) {
+            if (confirm(`Are you sure you want to delete this record?`)) {
+                 const tx = db.transaction('payments', 'readwrite');
+                 const store = tx.objectStore('payments');
+                 store.delete(id).onsuccess = () => displayHistory();
+            }
+        }
+        
+        function resetForm() {
+            paymentForm.reset();
+            recordIdInput.value = '';
+        }
+
+        function cancelEditMode() {
+            resetForm();
+            formSubmitBtn.textContent = 'Record Payment';
+            cancelEditBtn.classList.add('hidden');
+        }
+
+        // --- Display Functions ---
+        function displayReceipt(id) {
+            const tx = db.transaction("payments", "readonly");
+            const request = tx.objectStore("payments").get(id);
+
+            request.onsuccess = (e) => {
+                const data = e.target.result;
+                if(data) {
+                    document.getElementById('receiptId').textContent = String(data.id).padStart(4, '0');
+                    document.getElementById('receiptDate').textContent = new Date(data.date).toLocaleString('en-GB');
+                    document.getElementById('receiptStudent').textContent = data.studentName;
+                    document.getElementById('receiptClass').textContent = data.className;
+                    document.getElementById('receiptMonth').textContent = data.paymentMonth;
+                    document.getElementById('receiptMethod').textContent = data.paymentMethod;
+                    document.getElementById('receiptAmount').textContent = `Rs. ${data.classFees.toFixed(2)}`;
+                    
+                    document.getElementById('receipt-section').classList.remove('hidden');
+                    document.getElementById('receipt-section').scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+        }
+
+        function displayHistory() {
+            if (!db) {
+                console.error("Database not initialized. Cannot display history.");
+                return;
+            }
+            const historyContainer = document.getElementById('history-container');
+            historyContainer.innerHTML = '';
+
+            const store = db.transaction('payments').objectStore('payments');
+            store.openCursor(null, 'prev').onsuccess = e => {
+                const cursor = e.target.result;
+                if (cursor) {
+                    const item = cursor.value;
+                    const date = new Date(item.date).toLocaleDateString('en-GB');
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg flex flex-col md:flex-row justify-between md:items-center gap-3';
+                    historyItem.innerHTML = `
+                        <div class="flex-grow">
+                            <p class="font-bold">${item.studentName}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">${item.className} &bull; ${item.paymentMonth} &bull; ${date}</p>
+                            <p class="font-semibold text-teal-600 dark:text-teal-400 mt-1">Rs. ${item.classFees.toFixed(2)}</p>
+                        </div>
+                        <div class="flex items-center gap-2 self-end md:self-center">
+                            <button onclick="displayReceipt(${item.id})" class="p-2" title="Print"><svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg></button>
+                            <button onclick="editPayment(${item.id})" class="p-2" title="Edit"><svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
+                            <button onclick="deletePayment(${item.id})" class="p-2" title="Delete"><svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                        </div>
+                    `;
+                    historyContainer.appendChild(historyItem);
+                    cursor.continue();
+                } else if (!historyContainer.hasChildNodes()) {
+                     historyContainer.innerHTML = '<p class="text-gray-500">No payment records found.</p>';
+                }
+            };
+        }
+
+        // --- Print Functionality ---
+        document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+        // Set default month on page load
+        (function setDefaultMonth() {
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const currentMonth = monthNames[new Date().getMonth()];
+            document.getElementById('paymentMonth').value = currentMonth;
+        })();
+    </script>
+</body>
+</html>
